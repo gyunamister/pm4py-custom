@@ -24,6 +24,13 @@ class TransitionSystem(object):
         def __get_data(self):
             return self.__data
 
+        def set_data(self, key, value):
+            if key in self.__data:
+                self.__data[key].append(value)
+            else:
+                self.__data[key] = [value]
+
+
         def __repr__(self):
             return str(self.name)
 

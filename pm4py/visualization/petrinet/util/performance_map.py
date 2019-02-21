@@ -163,14 +163,15 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
     """
 
     statistics = {}
-
+    #print(variants_idx)
     for variant in variants_idx:
         first_trace = log[variants_idx[variant][0]]
+        #print(first_trace)
         act_trans = aligned_traces[variants_idx[variant][0]]["activated_transitions"]
+        #print(act_trans)
         annotations_places_trans, annotations_arcs = calculate_annotation_for_trace(first_trace, net, initial_marking,
                                                                                     act_trans, activity_key,
                                                                                     ht_perf_method=ht_perf_method)
-
         for el in annotations_places_trans:
             if el not in statistics:
                 statistics[el] = {"count": 0, "performance": [], "no_of_times_enabled": 0, "no_of_times_activated": 0}
@@ -185,6 +186,7 @@ def single_element_statistics(log, net, initial_marking, aligned_traces, variant
                 for trace_idx in variants_idx[variant]:
                     trace = log[trace_idx]
                     for perf_couple in annotations_places_trans[el]["performance"]:
+                        print("{}, {} -> {}".format(el, trace[perf_couple[1]], trace[perf_couple[0]]))
                         perf = (trace[perf_couple[0]][timestamp_key] - trace[perf_couple[1]][
                             timestamp_key]).total_seconds()
                         statistics[el]["performance"].append(perf)
