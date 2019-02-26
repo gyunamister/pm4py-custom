@@ -17,3 +17,6 @@ def get_dt_from_string(dt):
     """
     if type(dt) is str:
         return datetime.strptime(dt, "%Y-%m-%d %H:%M:%S")
+
+def get_string_from_dt(dt):
+    return dt.strftime("%Y-%m-%d %H:%M:%S")

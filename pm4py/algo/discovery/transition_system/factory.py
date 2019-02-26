@@ -1,12 +1,13 @@
 from pm4py import util as pmutil
-from pm4py.algo.discovery.transition_system.versions import view_based
+from pm4py.algo.discovery.transition_system.versions import view_based, annotated_based
 from pm4py.objects.conversion.log import factory as log_conversion
 from pm4py.objects.log.util import general as log_util
 from pm4py.objects.log.util import xes as xes_util
 
 VIEW_BASED = "view_based"
+ANNOTATED_BASED = 'annotated_based'
 
-VERSIONS = {VIEW_BASED: view_based.apply}
+VERSIONS = {VIEW_BASED: view_based.apply, ANNOTATED_BASED: annotated_based.apply}
 
 
 def apply(log, parameters=None, variant=VIEW_BASED):

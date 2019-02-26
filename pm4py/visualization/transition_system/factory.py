@@ -1,6 +1,6 @@
 from pm4py.visualization.common import gview
 from pm4py.visualization.common import save as gsave
-from pm4py.visualization.transition_system.versions import view_based
+from pm4py.visualization.transition_system.versions import view_based, annotated_based
 
 VIEW_BASED = "view_based"
 WO_DECORATION = "wo_decoration"
@@ -8,10 +8,12 @@ FREQUENCY_DECORATION = "frequency"
 PERFORMANCE_DECORATION = "performance"
 FREQUENCY_GREEDY = "frequency_greedy"
 PERFORMANCE_GREEDY = "performance_greedy"
+ANNOTATED_BASED = 'annotated_based'
+
 
 VERSIONS = {VIEW_BASED: view_based.apply, WO_DECORATION: view_based.apply, FREQUENCY_DECORATION: view_based.apply,
             PERFORMANCE_DECORATION: view_based.apply, FREQUENCY_GREEDY: view_based.apply,
-            PERFORMANCE_GREEDY: view_based.apply}
+            PERFORMANCE_GREEDY: view_based.apply, ANNOTATED_BASED: annotated_based.apply}
 
 
 def save(gviz, output_file_path):
@@ -40,7 +42,7 @@ def view(gviz):
     return gview.view(gviz)
 
 
-def apply(tsys, parameters=None, variant="view_based"):
+def apply(tsys, parameters=None, variant="view_based", value=None, aggregation_measure=None):
     """
     Get visualization of a Transition System
 
@@ -59,4 +61,4 @@ def apply(tsys, parameters=None, variant="view_based"):
     gviz
         Graph visualization
     """
-    return VERSIONS[variant](tsys, parameters=parameters)
+    return VERSIONS[variant](tsys, parameters=parameters, value=value, aggregation_measure=aggregation_measure)

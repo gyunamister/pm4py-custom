@@ -17,12 +17,15 @@ def apply(log, parameters=None):
         PARAMETER_CONSTANT_ACTIVITY_KEY] if PARAMETER_CONSTANT_ACTIVITY_KEY in parameters else DEFAULT_NAME_KEY
     transition_system = ts.TransitionSystem()
     #여기서 control flow 말고 event 자체를 추출하고 view sequence 만들 때 activity_key로 생성
+    print("project traces")
     control_flow_log = log_util.log.project_traces(log, [activity_key, 'time:timestamp'])
     #control_flow_log = log_util.log.project_traces(log, activity_key)
     #print(control_flow_log)
+    print("produce view sequences")
     view_sequence = (list(map(lambda t: __modi_compute_view_sequence(t, parameters), control_flow_log)))
     #view_sequence = (list(map(lambda t: __compute_view_sequence(t, parameters), control_flow_log)))
     #print(view_sequence)
+    print("construct state path")
     for vs in view_sequence:
         __construct_state_path(vs, transition_system)
     return transition_system
@@ -65,19 +68,6 @@ def __modi_compute_view_sequence(trace, parameters):
             view_sequences.append((__apply_abstr(act_trace[max(0, i - parameters[PARAM_KEY_WINDOW]):i], parameters),
                                    act_trace[i] if i < len(act_trace) else None, duration))
     return view_sequences
-
-
-def __compute_view_sequence(trace, parameters):
-    view_sequences = list()
-    for i in range(0, len(trace) + 1):
-        if parameters[PARAM_KEY_DIRECTION] == DIRECTION_FORWARD:
-            view_sequences.append((__apply_abstr(trace[i:i + parameters[PARAM_KEY_WINDOW]], parameters),
-                                   trace[i] if i < len(trace) else None))
-        else:
-            view_sequences.append((__apply_abstr(trace[max(0, i - parameters[PARAM_KEY_WINDOW]):i], parameters),
-                                   trace[i] if i < len(trace) else None))
-    return view_sequences
-
 
 def __apply_abstr(seq, parameters):
     case = {
